@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 #include <SDL/SDL_image.h>
+#include <SDL/SDL_ttf.h>
 int main(void){
 SDL_Surface *screen;
 SDL_Surface *menu;
@@ -10,22 +11,27 @@ SDL_Surface *load,*load2;
 SDL_Surface *settings,*settings2;
 SDL_Surface *quit,*quit2;
 SDL_Surface *key;
+SDL_Surface *texte=NULL;
 SDL_Rect positionecran;
 SDL_Event event;
 Mix_Music *music;
 SDL_Surface *background;
 SDL_Rect positionplay;
-SDL_Rect positionsettings,positionwindow,positionfull,positionback;
+SDL_Rect positionsettings,positionwindow,positionfull,positionback,ptexte;
 SDL_Rect positionquit;
 SDL_Rect positionload;
 char pause;int done=1,i=0,k=0,x=0,y=0;
-
+TTF_Font *police;
+SDL_Color couleurNoire={0,0,255};
 
 //graphic
 if(SDL_Init(SDL_INIT_VIDEO)!=0){
 printf("Unable to initialize SDL:%s\n",SDL_GetError());
 return 1;
 }
+TTF_Init();
+
+
 //----------
 screen = SDL_SetVideoMode(1920,1080,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 if(screen == NULL){
@@ -36,7 +42,7 @@ return 1;
 
 
 
-
+ police = TTF_OpenFont("Splatch.ttf",40);
 
 //music
 if(Mix_OpenAudio(44100,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,1024)==-1)
@@ -85,6 +91,12 @@ positionsettings.y=813;
 
 positionquit.x=850;
 positionquit.y=920;
+
+
+  ptexte.x=10;
+  ptexte.y=530;
+
+
 SDL_BlitSurface(background,NULL,screen,&positionecran);
 SDL_BlitSurface(play,NULL,screen,&positionplay);
 SDL_BlitSurface(load,NULL,screen,&positionload);
@@ -113,12 +125,14 @@ switch (i)
 {
     if(event.key.keysym.sym == SDLK_DOWN){
    play2= IMG_Load("PLAY_Anime.png");
-
+texte = TTF_RenderText_Blended(police,"would you like to enter the game ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play2,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+           k=0;
 }
  if(event.key.keysym.sym == SDLK_UP){
 
@@ -128,6 +142,8 @@ switch (i)
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit2,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+k=0;
 }
 
 break;
@@ -137,22 +153,25 @@ break;
     if(event.key.keysym.sym == SDLK_DOWN){
 
    load2= IMG_Load("LOAD_Anime.png");
-
+texte = TTF_RenderText_Blended(police,"load game",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load2,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+           k=0;
 }
 if(event.key.keysym.sym == SDLK_UP){
 
    settings2= IMG_Load("SETTINGS_Anime.png");
-
+texte = TTF_RenderText_Blended(police,"would you like to enter the settings menu ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings2,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
 k=1;
 }
 
@@ -163,22 +182,26 @@ break;
     if(event.key.keysym.sym == SDLK_DOWN){
 
    settings2= IMG_Load("SETTINGS_Anime.png");
-
+texte = TTF_RenderText_Blended(police,"would you like to enter the settings menu ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings2,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
 k=1;
 }
 if(event.key.keysym.sym == SDLK_UP){
 
    load2= IMG_Load("LOAD_Anime.png");
+   texte = TTF_RenderText_Blended(police,"load game",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load2,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+k=0;
 }
 
 break;
@@ -188,21 +211,27 @@ break;
     if(event.key.keysym.sym == SDLK_DOWN){
 
    quit2= IMG_Load("QUIT_Anime.png");
+    texte = TTF_RenderText_Blended(police,"would you like to quit the game ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit2,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+                  k=0;
+
 }
 
   if(event.key.keysym.sym == SDLK_UP){
    play2= IMG_Load("PLAY_Anime.png");
-
+texte = TTF_RenderText_Blended(police,"would you like to enter the game ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play2,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+           k=0;
 }
 break;
 }
@@ -217,13 +246,15 @@ case SDL_MOUSEMOTION:
 						{
 
 play2= IMG_Load("PLAY_Anime.png");
+texte = TTF_RenderText_Blended(police,"would you like to enter the game ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play2,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
 
-
+k=0;
 
 						}
 if(x>=positionload.x && x<=positionload.x+positionload.w && y>=positionload.y && y<=positionload.y+positionload.h)
@@ -231,25 +262,27 @@ if(x>=positionload.x && x<=positionload.x+positionload.w && y>=positionload.y &&
 						{
 
 load2= IMG_Load("LOAD_Anime.png");
+texte = TTF_RenderText_Blended(police,"load game",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load2,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
-
-
-
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
+k=0;
 						}
 if(x>=positionsettings.x && x<=positionsettings.x+positionsettings.w && y>=positionsettings.y && y<=positionsettings.y+positionsettings.h)
 
 						{
 
 settings2= IMG_Load("SETTINGS_Anime.png");
+texte = TTF_RenderText_Blended(police,"would you like to enter the settings menu ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings2,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
 k=1;
 
 
@@ -260,13 +293,16 @@ if(x>=positionquit.x && x<=positionquit.x+positionquit.w && y>=positionquit.y &&
 						{
 
 quit2= IMG_Load("QUIT_Anime.png");
+    texte = TTF_RenderText_Blended(police,"would you like to quit the game ",couleurNoire);//ecriture du text
 	    SDL_BlitSurface(background,NULL,screen,&positionecran);
             SDL_BlitSurface(play,NULL,screen,&positionplay);
             SDL_BlitSurface(load,NULL,screen,&positionload);
             SDL_BlitSurface(settings,NULL,screen,&positionsettings);
            SDL_BlitSurface(quit2,NULL,screen,&positionquit);
+           SDL_BlitSurface(texte, NULL, screen, &ptexte);
 
 
+k=0;
 
 						}
 						break;
@@ -296,7 +332,7 @@ SDL_BlitSurface(setmenu,NULL,screen,&positionecran);
 }
 
 
-
+SDL_Flip(screen);
 //freeallocation
 SDL_FreeSurface(play);
 SDL_FreeSurface(window);
@@ -313,6 +349,9 @@ SDL_FreeSurface(quit2);
 SDL_FreeSurface(setmenu);
 SDL_FreeSurface(background);
 Mix_FreeMusic(music);
+SDL_FreeSurface(texte); 
+ TTF_CloseFont(police);
+    TTF_Quit();
 pause=getchar();
 return 0;
 }
