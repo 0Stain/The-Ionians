@@ -86,25 +86,47 @@ E->Frame.i=0;
 
 
 void moveEnnemi(Ennemi *E, SDL_Rect posHero)
+{ int max=1300, min=1100;
+int distEH = E->positionAbsolue.x - (posHero.x + Hero_WIDTH);
+    	switch(E->State)
 {
-	if (posHero.x<E->positionAbsolue.x) //hero à gauche de l'ennemi
-	{
-        	E->positionAbsolue.x -= 8; 
-	}
-}
-void moveEnnemi3(Ennemi *E, SDL_Rect posHero)
+case MOVING:
 {
-	
-       	E->positionAbsolue.x +=25;
-	
-}
-void moveEnnemi2(Ennemi *E, SDL_Rect posHero)
+        	if (distEH == max)
 {
-	if (posHero.x<E->positionAbsolue.x) //hero à gauche de l'ennemi
-	{
-        	E->positionAbsolue.x += 8; 
-	}
+  E->positionAbsolue.x-=8;
 }
+if (E->positionAbsolue.x==min)
+{
+E->positionAbsolue.x+=8;
+}
+break;
+}
+case FOLLOWING :
+{
+	  E->positionAbsolue.x-=8;
+break;
+}
+case ATTACKING : 
+{
+
+	  E->positionAbsolue.x-=8;
+break;
+}
+
+case RUNNING:
+{
+	  E->positionAbsolue.x+=20;
+
+break;
+}
+}
+
+
+}
+
+
+
 void update_ennemi(Ennemi* E, SDL_Rect posHero)
 { 
 
@@ -117,22 +139,13 @@ void update_ennemi(Ennemi* E, SDL_Rect posHero)
             		animateEnnemi(E);
             		break;
         	}
-case MOVING :
+                case MOVING :
         	{
             		animateEnnemi(E);
             		moveEnnemi(E,posHero);
             		break;
         	}
-case MOVING1 :
-        	{
 
-
-            		animateEnnemi(E);
-            		moveEnnemi3(E,posHero);
-
-            		break;
-        	}
-               
         	case FOLLOWING :
         	{
             		animateEnnemi(E);
@@ -150,7 +163,7 @@ case MOVING1 :
                 case RUNNING :
                 {
                         animateEnnemi(E);
-			moveEnnemi2(E,posHero);
+			moveEnnemi(E,posHero);
                 break;
                 }
 
@@ -166,29 +179,25 @@ void updateEnnemiState(Ennemi* E, int distEH)
    	
 
 	/* Completer le code ici */
-if (    distEH > 1200 )
+if (    distEH >= 1300 )
 {
 	E->State = WAITING;
 } 
-if(    distEH <= 1200)
+if (    (distEH < 1300) && (distEH>=1000))
 {
 	E->State = MOVING;
 } 
-if (    distEH < 1000)
-{
-	E->State = MOVING1;
-} 
 
-if (    distEH <= 600)
+if (    (distEH <1000) && (distEH>=100))
 {
 	E->State = FOLLOWING;
 } 	
-if (    distEH < 100)
+if (    (distEH < 100) && (distEH>=0))
 {
 	E->State = ATTACKING;
 } 	
 	
-if (    distEH <= 0)
+if (    distEH < 0)
 {
 E->State =RUNNING;
 }
