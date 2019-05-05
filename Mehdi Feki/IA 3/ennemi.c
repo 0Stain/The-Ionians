@@ -92,17 +92,17 @@ int distEH = E->positionAbsolue.x - (posHero.x + Hero_WIDTH);
 {
 case MOVING:
 {
-        	
-
-  E->positionAbsolue.x-=8;
-
- 
-if (E->positionAbsolue.x==min)
+     switch (distEH)
 {
+case 1300 :    	
+  E->positionAbsolue.x-=8;
+break;
+ case 1100:
 E->positionAbsolue.x+=8;
-}
 break;
 }
+
+
 case FOLLOWING :
 {
 	  E->positionAbsolue.x-=8;
@@ -123,7 +123,7 @@ break;
 }
 }
 
-
+}
 }
 
 
@@ -182,26 +182,26 @@ void updateEnnemiState(Ennemi* E, int distEH)
 case WAITING : 
 	       {
 
-              if (    (distEH < 1300) && (distEH>=1000))
+              if (    (distEH <= 1300) && (distEH>1100))
 	             E->State = MOVING;
              break ; 
            }
 case MOVING : 
            {
-            if (    (distEH <1000) && (distEH>=100))
+            if (    (distEH <=1000) && (distEH>100))
 	          E->State = FOLLOWING;
             break; 
           }
 case FOLLOWING : 
 { 	
-if (    (distEH < 100) && (distEH>=0))
+if (    (distEH <= 100) && (distEH>0))
 	E->State = ATTACKING;
 	
 break; 
 }
 case ATTACKING :
 {	
-if (    distEH < 0)
+if (    distEH <= 0)
 E->State =RUNNING;
 break ; 
 }
