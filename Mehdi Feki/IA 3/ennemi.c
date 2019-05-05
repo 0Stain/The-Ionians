@@ -92,10 +92,11 @@ int distEH = E->positionAbsolue.x - (posHero.x + Hero_WIDTH);
 {
 case MOVING:
 {
-        	if (distEH == max)
-{
+        	
+
   E->positionAbsolue.x-=8;
-}
+
+ 
 if (E->positionAbsolue.x==min)
 {
 E->positionAbsolue.x+=8;
@@ -176,32 +177,35 @@ void update_ennemi(Ennemi* E, SDL_Rect posHero)
 void updateEnnemiState(Ennemi* E, int distEH)
 {
 	// Selon l'état courant de l'ennemi, implementer les transitions t2, t4 et t6
-   	
+   	switch(E->State)
+{
+case WAITING : 
+	       {
 
-	/* Completer le code ici */
-if (    distEH >= 1300 )
-{
-	E->State = WAITING;
-} 
-if (    (distEH < 1300) && (distEH>=1000))
-{
-	E->State = MOVING;
-} 
-
-if (    (distEH <1000) && (distEH>=100))
-{
-	E->State = FOLLOWING;
-} 	
+              if (    (distEH < 1300) && (distEH>=1000))
+	             E->State = MOVING;
+             break ; 
+           }
+case MOVING : 
+           {
+            if (    (distEH <1000) && (distEH>=100))
+	          E->State = FOLLOWING;
+            break; 
+          }
+case FOLLOWING : 
+{ 	
 if (    (distEH < 100) && (distEH>=0))
-{
 	E->State = ATTACKING;
-} 	
 	
-if (    distEH < 0)
-{
-E->State =RUNNING;
+break; 
 }
-
+case ATTACKING :
+{	
+if (    distEH < 0)
+E->State =RUNNING;
+break ; 
+}
+}
 
 }
 
